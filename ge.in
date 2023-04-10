@@ -1,0 +1,83 @@
+go atlas
+mesh space.mult=1.0
+x.mesh loc=0 spac=10
+x.mesh loc=200 spac=10
+y.mesh loc=-20 spac=5
+y.mesh loc=400 spac=5
+
+region num=1 y.min=0 y.max=400 ge
+region num=2  name=anode material=nickel  y.min=-20 y.max=0 x.min=0 x.max=50
+region num=3  name=cathode material=aluminum  y.min=-20 y.max=0 x.min=100 x.max=200
+region num=4 material=air y.min=-20 y.max=0 x.min=50 x.max=100
+electrode name=anode num=2
+electrode name=cathode num=3
+doping num=1 conc=5e18 n.type
+save outfile=ge.str
+tonyplot ge.str
+go atlas
+init infile=ge.str
+contact name=cathode workfun=4.1
+beam num=1 x.origin=75 y.origin=-30 angle=90
+models srh  print fldmob  fermi optr 
+method newton
+log outf=gelight100.log
+solve prev b1=1 lambda=1.22
+solve vanode=-2 vstep=0.1 vfinal=3 name=anode
+save outfile=gelight100.str
+quit
+
+tonyplot -overlay gelight100.log gelight10.log -set show.set
+go atlas
+init infile=ge.str
+contact name=cathode workfun=4.1
+beam num=1 x.origin=50 y.origin=-30 angle=90
+models srh  print fldmob  fermi optr 
+method newton
+solve init
+solve vanode=0.1
+#光线 400nm-1200nm 光强1W/cm2
+log outf=gelight.log master
+solve prev b1=1 lambda=0.600 wstep=0.025 wfinal=1.6
+tonyplot gelight.log
+
+quit
+solve prev b1=1 lambda=0.300
+solve prev b1=1 lambda=0.325
+solve prev b1=1 lambda=0.350
+solve prev b1=1 lambda=0.375
+solve prev b1=1 lambda=0.400
+solve prev b1=1 lambda=0.425
+solve prev b1=1 lambda=0.450
+solve prev b1=1 lambda=0.475
+solve prev b1=1 lambda=0.500
+solve prev b1=1 lambda=0.525
+solve prev b1=1 lambda=0.550
+solve prev b1=1 lambda=0.575
+solve prev b1=1 lambda=0.600
+solve prev b1=1 lambda=0.625
+solve prev b1=1 lambda=0.650
+solve prev b1=1 lambda=0.675
+solve prev b1=1 lambda=0.700
+solve prev b1=1 lambda=0.725
+solve prev b1=1 lambda=0.750
+solve prev b1=1 lambda=0.775
+solve prev b1=1 lambda=0.800
+solve prev b1=1 lambda=0.825
+solve prev b1=1 lambda=0.850
+solve prev b1=1 lambda=0.875
+solve prev b1=1 lambda=0.900
+solve prev b1=1 lambda=0.925
+solve prev b1=1 lambda=0.950
+solve prev b1=1 lambda=0.975
+solve prev b1=1 lambda=1.000
+solve prev b1=1 lambda=1.025
+solve prev b1=1 lambda=1.050
+solve prev b1=1 lambda=1.075
+solve prev b1=1 lambda=1.100
+solve prev b1=1 lambda=1.125
+solve prev b1=1 lambda=1.150
+solve prev b1=1 lambda=1.175
+solve prev b1=1 lambda=1.200
+tonyplot gelight.log
+
+quit
